@@ -1,4 +1,4 @@
-class itemQO():
+class ItemQO():
     def __init__(self, name, category, price):
         self.name = name
         self.category = category
