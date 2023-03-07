@@ -1,9 +1,10 @@
-import sys
-sys.path.append("..")
 import unittest
 from unittest.mock import patch, MagicMock
-from model import Inventory
-from query_object.itemQO import ItemQO
+import sys
+sys.path.append("..")
+from model import Inventory  # noqa: E402
+from query_object.itemQO import ItemQO  # noqa: E402
+
 
 class InsertTestCase(unittest.TestCase):
 
@@ -21,7 +22,7 @@ class InsertTestCase(unittest.TestCase):
         exclude_list = ['id', 'last_updated_dt']
         result = item.to_json_exclude(exclude_list)
         self.assertEqual(result, expected_json)
-    
+
     @patch('model.Inventory._is_exsisted')
     @patch('app.db.session')
     def test_insert(self, mock_session, mock_is_existed):
@@ -38,6 +39,7 @@ class InsertTestCase(unittest.TestCase):
         mock_session.commit.assert_called_once()
         mock_session.refresh.assert_called_once()
         self.assertTrue("id" in result)
-    
+
+
 if __name__ == '__main__':
     unittest.main()

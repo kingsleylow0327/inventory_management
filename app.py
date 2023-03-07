@@ -10,6 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config.DB_PATH
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
+
 @app.route('/insert', methods=['POST'])
 def insert():
     request_data = request.get_json()
@@ -18,17 +19,20 @@ def insert():
                     request_data.get('price', ''))
     return Inventory.insert(itemQo)
 
+
 @app.route('/filter', methods=['POST'])
 def filter():
     request_data = request.get_json()
     filterQo = FilterQO(request_data.get('dt_from', ''),
-                    request_data.get('dt_to', ''))
+                        request_data.get('dt_to', ''))
     return Inventory.filter(filterQo)
+
 
 @app.route('/category', methods=['POST'])
 def category():
     request_data = request.get_json()
-    return Inventory.categorize(request_data.get('category',''))
+    return Inventory.categorize(request_data.get('category', ''))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

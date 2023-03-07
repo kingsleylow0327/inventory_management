@@ -1,8 +1,9 @@
-import sys
-sys.path.append("..")
 import unittest
 from unittest.mock import patch
-from model import Inventory
+import sys
+sys.path.append("..")
+from model import Inventory  # noqa: E402
+
 
 class CategorizeTestCase(unittest.TestCase):
 
@@ -11,6 +12,7 @@ class CategorizeTestCase(unittest.TestCase):
         result = Inventory.categorize("Pen")
         mock_session.query.assert_called_once()
         self.assertTrue("items" in result)
-    
+
+
 if __name__ == '__main__':
     unittest.main()

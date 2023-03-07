@@ -1,9 +1,10 @@
-import sys
-sys.path.append("..")
 import json
 import unittest
 from unittest.mock import patch
-from app import app, Inventory, ItemQO, FilterQO
+import sys
+sys.path.append("..")
+from app import app, Inventory, ItemQO, FilterQO  # noqa: E402
+
 
 class RequestTestCase(unittest.TestCase):
 
@@ -18,10 +19,10 @@ class RequestTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertEqual(json.loads(response.data), {"id": 1})
         mock_insert.assert_called_once()
-    
+
     @patch.object(Inventory, 'filter')
     def test_filter(self, mock_filter):
-        ret_json =  {"items": [{
+        ret_json = {"items": [{
                 "id": 135,
                 "name": "Notebook",
                 "category": "Stationary",
@@ -38,7 +39,7 @@ class RequestTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertEqual(json.loads(response.data), ret_json)
         mock_filter.assert_called_once()
-    
+
     @patch.object(Inventory, 'categorize')
     def test_category(self, mock_category):
         ret_json = {"items": [{
@@ -55,6 +56,7 @@ class RequestTestCase(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertEqual(json.loads(response.data), ret_json)
         mock_category.assert_called_once()
+
 
 if __name__ == '__main__':
     unittest.main()
