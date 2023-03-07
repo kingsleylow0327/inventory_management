@@ -11,7 +11,11 @@ db.init_app(app)
 
 @app.route('/insert', methods=['POST'])
 def insert():
-    return
+    request_data = request.get_json()
+    itemQo = ItemQO(request_data.get('name', ''),
+                    request_data.get('category', ''),
+                    request_data.get('price', ''))
+    return Inventory.insert(itemQo)
 
 @app.route('/filter', methods=['POST'])
 def filter():
