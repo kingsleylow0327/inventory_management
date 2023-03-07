@@ -26,8 +26,8 @@ class Inventory(db.Model):
     
     @staticmethod
     def insert(itemQo):
-        new_item = Inventory(name=itemQo.name, 
-                                  category=itemQo.category,
+        new_item = Inventory(name=itemQo.name.category.lower(), 
+                                  category=itemQo.category.lower(),
                                   price=itemQo.price)
         if Inventory._is_exsisted(new_item):
             new_item.last_updated_dt = datetime.now(tz)
@@ -51,3 +51,8 @@ class Inventory(db.Model):
         listt = [item.to_json_exclude([]) for item in items]
         total_price = sum([float(item["price"]) for item in listt])
         return {"item": listt, "total_price": total_price}
+    
+    @staticmethod
+    def categorize(category):
+        cat = category.lower()
+        pass

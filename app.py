@@ -27,7 +27,8 @@ def filter():
 
 @app.route('/category', methods=['POST'])
 def category():
-    return
+    request_data = request.get_json()
+    return Inventory.categorize(request_data.get('category',''))
 
 if __name__ == '__main__':
     app.run(debug=True)
