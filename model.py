@@ -3,7 +3,6 @@ from sqlalchemy import func
 from sqlalchemy.orm import class_mapper
 from datetime import datetime
 import pytz
-import json
 
 db = SQLAlchemy()
 tz = pytz.timezone('Asia/Singapore')
