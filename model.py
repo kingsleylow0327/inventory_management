@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from sqlalchemy.orm import class_mapper
 from datetime import datetime
 import pytz
@@ -26,7 +27,7 @@ class Inventory(db.Model):
     
     @staticmethod
     def insert(itemQo):
-        new_item = Inventory(name=itemQo.name.category.lower(), 
+        new_item = Inventory(name=itemQo.name.lower(), 
                                   category=itemQo.category.lower(),
                                   price=itemQo.price)
         if Inventory._is_exsisted(new_item):
@@ -44,15 +45,30 @@ class Inventory(db.Model):
     
     @staticmethod
     def filter(filterQo):
-        items = Inventory.query.filter(Inventory.
+        query = Inventory.query.filter(Inventory.
                                        last_updated_dt.
                                        between(filterQo.dt_from,
                                                filterQo.dt_to)).all()
-        listt = [item.to_json_exclude([]) for item in items]
-        total_price = sum([float(item["price"]) for item in listt])
-        return {"item": listt, "total_price": total_price}
+        item_list = [item.to_json_exclude([]) for item in query]
+        total_price = sum([float(item["price"]) for item in item_list])
+        return {"item": item_list, "total_price": total_price}
     
     @staticmethod
     def categorize(category):
         cat = category.lower()
-        pass
+        query = db.session.query(
+            Inventory.category.label('category'), 
+            func.count(Inventory.category).label('count'), 
+            func.sum(Inventory.price).label('total_price')
+        ).group_by(Inventory.category)
+        if cat != "all":
+            query = query.filter(Inventory.category == cat)
+        items = query.all()
+        ret_json = {'items': []}
+        for item in items:
+            ret_json['items'].append({
+                'category': item.category,
+                'count': item.count,
+                'total_price': item.total_price
+            })
+        return ret_json
