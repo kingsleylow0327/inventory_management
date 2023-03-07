@@ -16,7 +16,11 @@ class Inventory(db.Model):
     def to_json(self):
         columns = [c.key for c in class_mapper(type(self)).columns if c.key != "id"]
         return {c: str(getattr(self, c)) for c in columns}
-
+    
+    @classmethod
+    def _is_exsisted(cls, itemQo) -> bool:
+        return bool(cls.query.filter_by(name=itemQo.name).count())
+    
     @staticmethod
     def insert(itemQo):
         new_item = Inventory(name=itemQo.name, 
@@ -35,6 +39,6 @@ class Inventory(db.Model):
             db.session.refresh(new_item)
             return {"id": new_item.id}
     
-    @classmethod
-    def _is_exsisted(cls, itemQo) -> bool:
-        return bool(cls.query.filter_by(name=itemQo.name).count())
+    @staticmethod
+    def filter(filterQo):
+        pass

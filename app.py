@@ -20,7 +20,10 @@ def insert():
 
 @app.route('/filter', methods=['POST'])
 def filter():
-    return
+    request_data = request.get_json()
+    filterQo = FilterQO(request_data.get('dt_from', ''),
+                    request_data.get('dt_to', ''))
+    return Inventory.filter(filterQo)
 
 @app.route('/category', methods=['POST'])
 def category():
