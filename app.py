@@ -1,6 +1,7 @@
 from flask import Flask, request
 from model import db, Inventory
-from itemQO import ItemQO
+from query_object.itemQO import ItemQO
+from query_object.filterQO import FilterQO
 from config import Config
 
 app = Flask(__name__)
